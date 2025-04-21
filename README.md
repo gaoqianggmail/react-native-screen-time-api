@@ -24,6 +24,7 @@ Access the Screen Time API for iOS and Wellbeing API for Android (coming soon). 
   - [Configure Podfile](#configure-podfile)
   - [Add FamilyControls capability to your app](#add-familycontrols-capability-to-your-app)
   - [Request Family Controls capabilities](#request-family-controls-capabilities)
+- [Set up for Expo](#set-up-for-expo)
 - [Sample code](#sample-code)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
@@ -72,6 +73,42 @@ Open `ios/[your-app]/[your-app].entitlements` file, add this definition:
 ### Request Family Controls capabilities
 
 In addition to adding the Family Controls entitlement, for distribution, you will also need to [request Family Controls capabilities](https://developer.apple.com/contact/request/family-controls-distribution)
+
+## Set up for Expo
+
+To use this package with Expo, you will need to:
+
+1. Request and get approved for the special production entitlements through Apple's Family Controls capabilities request (required for all appIds: main app, and device activity extension). The app will work in development without these permissions but it will not process when submitting to the App Store without the relevant permissions.
+
+2. Add the following configuration to `expo.ios` in your `app.config.js`:
+
+```javascript
+infoPlist: {
+  NSFamilyControlsUsageDescription:
+    "We need access to screen time data to help you track your device usage",
+},
+entitlements: {
+  "com.apple.developer.family-controls": true
+},
+```
+
+3. Add the following to your `expo.plugins` config:
+
+```javascript
+[
+  "expo-build-properties",
+  {
+    ios: {
+      useFrameworks: "static",
+      deploymentTarget: "16.0",
+    },
+  },
+],
+```
+
+Note: You'll need to install expo-build-properties if you haven't already:
+
+`expo install expo-build-properties`
 
 ## Sample code
 ```typescript
@@ -192,6 +229,14 @@ You can first modify the code under `Pods/Development Pods/ReactNativeScreenTime
           <img src="https://avatars.githubusercontent.com/u/11560399?v=4" width="100px;" alt="Thom Morgan"/><br />
           <sub>
             <b>Ashish Ramachandran</b>
+          </sub>
+        </a>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/azizsaad">
+          <img src="https://avatars.githubusercontent.com/u/46464104?v=4" width="100px;" alt="Saad Aziz"/><br />
+          <sub>
+            <b>Saad Aziz</b>
           </sub>
         </a>
       </td>
