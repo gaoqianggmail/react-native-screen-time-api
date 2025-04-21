@@ -232,6 +232,14 @@ You can first modify the code under `Pods/Development Pods/ReactNativeScreenTime
           </sub>
         </a>
       </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/azizsaad">
+          <img src="https://avatars.githubusercontent.com/u/46464104?v=4" width="100px;" alt="Saad Aziz"/><br />
+          <sub>
+            <b>Saad Aziz</b>
+          </sub>
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>
