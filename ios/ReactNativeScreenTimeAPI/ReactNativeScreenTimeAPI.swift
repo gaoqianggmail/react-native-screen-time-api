@@ -157,12 +157,35 @@ public class ScreenTimeAPI: NSObject {
   }
   
   @objc
-  public func setActivitySelection(_ selection: NSDictionary,
+  public func setActivitySelection(_ selectionDict: NSDictionary,
                                    resolver resolve: RCTPromiseResolveBlock? = nil,
                                    rejecter reject: RCTPromiseRejectBlock? = nil)
   {
-    if let selection = FamilyActivitySelection.from(selection) {
+    if let selection = FamilyActivitySelection.from(selectionDict) { // 'selection' is the native FamilyActivitySelection object
       activitySelection = selection
+
+      // --- ADDED CODE: Save to App Group UserDefaults ---
+      let appGroupId = "group.com.allinaigc.PrayToUnlock" // Your App Group ID
+      let userDefaultsKey = "shieldedSelection"        // Key used by your PrayToUnlockMonitor extension
+
+      if let userDefaults = UserDefaults(suiteName: appGroupId) {
+          do {
+              let encoder = JSONEncoder()
+              // FamilyActivitySelection from Apple's SDK is already Codable.
+              let selectionData = try encoder.encode(selection) 
+              userDefaults.set(selectionData, forKey: userDefaultsKey)
+              print("RNScreenTimeAPI: Successfully saved FamilyActivitySelection to App Group UserDefaults for key '\(userDefaultsKey)' in group '\(appGroupId)'.")
+          } catch {
+              print("RNScreenTimeAPI: Failed to encode or save FamilyActivitySelection to App Group UserDefaults: \(error)")
+              // Decide if this failure should be reported back to JS, e.g., by calling reject
+              // For now, it just prints the error to the native console.
+          }
+      } else {
+          print("RNScreenTimeAPI: Error: Could not access App Group UserDefaults. App Group ID: \(appGroupId). Is the App Group configured correctly for the main app target?")
+          // Decide if this failure should be reported back to JS
+      }
+      // --- END OF ADDED CODE ---
+
       resolve?(nil)
       return
     }
@@ -432,4 +455,3 @@ public class ScreenTimeAPI: NSObject {
 extension DeviceActivityName {
   static let daily = Self("daily")
 }
-
